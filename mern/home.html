@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        
+        header .logo h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .movie-section {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .movie-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .movie-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .movie-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .movie-card img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .movie-card h3 {
+            font-size: 22px;
+            margin: 10px 0;
+        }
+        
+        .movie-card p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        
+        .movie-card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .movie-card a:hover {
+            background-color: #218838;
+        }
+        
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+        
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 8px;
+        }
+        
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            right: 10px;
+        }
+        
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+        
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        </style>
+</head>
+<body>
+    
+    <header>
+        <div class="logo">
+            <h1>Book Your Show</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/home.html">Home</a></li>
+                <li><a href="/movie.html">Movies</a></li>
+                <li><a href="/confom.html">Bookings</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+                <li><a href="/reg.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <section class="movie-section">
+        <h2>Now Showing</h2>
+        <div class="movie-container" id="movie-container">
+            
+        </div>
+    </section>
+
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-btn" class="close-btn">&times;</span>
+            <h2>Book Your Ticket</h2>
+            <form id="booking-form">
+                <label for="movie-title">Movie:</label>
+                <input type="text" id="movie-title" disabled>
+                <label for="show-time">Show Time:</label>
+                <input type="text" id="show-time" disabled>
+                <label for="num-tickets">Number of Tickets:</label>
+                <input type="number" id="num-tickets" min="1" value="1" required>
+                <button type="submit">Confirm Booking</button>
+            </form>
+            <div id="booking-message"></div>
+        </div>
+    </div>
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-btn" class="close-btn">&times;</span>
+            <h2>Book Your Ticket</h2>
+            <form id="booking-form">
+                <label for="movie-title">Movie:</label>
+                <input type="text" id="movie-title" disabled>
+                <label for="show-time">Show Time:</label>
+                <input type="text" id="show-time" disabled>
+                <label for="num-tickets">Number of Tickets:</label>
+                <input type="number" id="num-tickets" min="1" value="1" required>
+                <button type="submit">Confirm Booking</button>
+            </form>
+            <div id="booking-message"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Book Your Show. All rights reserved.</p>
+    </footer>
+
+    <script > document.addEventListener("DOMContentLoaded", () => {
+        const movies = [
+            {
+                title: "Puspha 2",
+                genre: "Action",
+                duration: "2h 15m",
+                img: "puspa 2.jpeg",
+                showTimes: ["12:00 PM", "3:00 PM", "6:00 PM"]
+            },
+            {
+                title: "Amaran",
+                genre: "Comedy",
+                duration: "1h 50m",
+                img: "amaran.jpeg",
+                showTimes: ["11:00 AM", "2:00 PM", "5:00 PM"]
+            },
+            {
+                title: "Kanguva",
+                genre: "Drama",
+                duration: "2h 5m",
+                img: "kanguva.jpeg",
+                showTimes: ["1:00 PM", "4:00 PM", "7:00 PM"]
+            }
+            
+        ];
+    
+        const movieContainer = document.getElementById("movie-container");
+        const modal = document.getElementById("booking-modal");
+        const closeModalButton = document.getElementById("close-btn");
+        const bookingForm = document.getElementById("booking-form");
+        const bookingMessage = document.getElementById("booking-message");
+        const movieTitleInput = document.getElementById("movie-title");
+        const showTimeInput = document.getElementById("show-time");
+        const numTicketsInput = document.getElementById("num-tickets");
+    
+        const openBookingModal = (movie, showTime) => {
+            movieTitleInput.value = movie.title;
+            showTimeInput.value = showTime;
+            modal.style.display = "block";
+        };
+    
+        closeModalButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    
+        bookingForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const numTickets = numTicketsInput.value;
+    
+            if (numTickets < 1) {
+                bookingMessage.innerHTML = "<p style='color: red;'>Please select at least one ticket.</p>";
+                return;
+            }
+    
+            bookingMessage.innerHTML = `<p style='color: green;'>Your booking is confirmed! You booked ${numTickets} ticket(s) for "${movieTitleInput.value}" at ${showTimeInput.value}.</p>`;
+    
+            bookingForm.reset();
+            setTimeout(() => {
+                modal.style.display = "none";
+                bookingMessage.innerHTML = "";
+            }, 3000);
+        });
+    
+        movies.forEach((movie) => {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+    
+            movieCard.innerHTML = `
+                <img src="${movie.img}" alt="${movie.title}">
+                <h3>${movie.title}</h3>
+                <p>Genre: ${movie.genre}</p>
+                <p>Duration: ${movie.duration}</p>
+                <a href="#" onclick="openBookingModal(${JSON.stringify(movie)}, '${movie.showTimes[0]}')">Book Now</a>
+            `;
+            
+            movieContainer.appendChild(movieCard);
+        });
+    
+        window.openBookingModal = openBookingModal;
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+        const movies = [
+            {
+                title: "death pool",
+                genre: "Action",
+                duration: "2h 15m",
+                img: "pool.jpeg",
+                showTimes: ["12:00 PM", "3:00 PM", "6:00 PM"]
+            },
+            {
+                title: "dragon",
+                genre: "Comedy",
+                duration: "1h 50m",
+                img: "dragon.jpeg",
+                showTimes: ["11:00 AM", "2:00 PM", "5:00 PM"]
+            },
+            {
+                title: "Kanguva",
+                genre: "Drama",
+                duration: "2h 5m",
+                img: "kanguva.jpeg",
+                showTimes: ["1:00 PM", "4:00 PM", "7:00 PM"]
+            }
+            
+        ];
+    
+        const movieContainer = document.getElementById("movie-container");
+        const modal = document.getElementById("booking-modal");
+        const closeModalButton = document.getElementById("close-btn");
+        const bookingForm = document.getElementById("booking-form");
+        const bookingMessage = document.getElementById("booking-message");
+        const movieTitleInput = document.getElementById("movie-title");
+        const showTimeInput = document.getElementById("show-time");
+        const numTicketsInput = document.getElementById("num-tickets");
+    
+        const openBookingModal = (movie, showTime) => {
+            movieTitleInput.value = movie.title;
+            showTimeInput.value = showTime;
+            modal.style.display = "block";
+        };
+    
+        closeModalButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    
+        bookingForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const numTickets = numTicketsInput.value;
+    
+            if (numTickets < 1) {
+                bookingMessage.innerHTML = "<p style='color: red;'>Please select at least one ticket.</p>";
+                return;
+            }
+    
+            bookingMessage.innerHTML = `<p style='color: green;'>Your booking is confirmed! You booked ${numTickets} ticket(s) for "${movieTitleInput.value}" at ${showTimeInput.value}.</p>`;
+    
+            bookingForm.reset();
+            setTimeout(() => {
+                modal.style.display = "none";
+                bookingMessage.innerHTML = "";
+            }, 3000);
+        });
+    
+        movies.forEach((movie) => {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+    
+            movieCard.innerHTML = `
+                <img src="${movie.img}" alt="${movie.title}">
+                <h3>${movie.title}</h3>
+                <p>Genre: ${movie.genre}</p>
+                <p>Duration: ${movie.duration}</p>
+                <a href="#" onclick="openBookingModal(${JSON.stringify(movie)}, '${movie.showTimes[0]}')">Book Now</a>
+            `;
+            
+            movieContainer.appendChild(movieCard);
+        });
+    
+        window.openBookingModal = openBookingModal;
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+        const movies = [
+            {
+                title: "The legend",
+                genre: "Action",
+                duration: "2h 15m",
+                img: "the.jpeg",
+                showTimes: ["12:00 PM", "3:00 PM", "6:00 PM"]
+            },
+            {
+                title: "Ranam",
+                genre: "Comedy",
+                duration: "1h 50m",
+                img: "ra.jpeg",
+                showTimes: ["11:00 AM", "2:00 PM", "5:00 PM"]
+            },
+            {
+                title: "Indian 2",
+                genre: "Drama",
+                duration: "2h 5m",
+                img: "indian.jpeg",
+                showTimes: ["1:00 PM", "4:00 PM", "7:00 PM"]
+            }
+            
+        ];
+    
+        const movieContainer = document.getElementById("movie-container");
+        const modal = document.getElementById("booking-modal");
+        const closeModalButton = document.getElementById("close-btn");
+        const bookingForm = document.getElementById("booking-form");
+        const bookingMessage = document.getElementById("booking-message");
+        const movieTitleInput = document.getElementById("movie-title");
+        const showTimeInput = document.getElementById("show-time");
+        const numTicketsInput = document.getElementById("num-tickets");
+    
+        const openBookingModal = (movie, showTime) => {
+            movieTitleInput.value = movie.title;
+            showTimeInput.value = showTime;
+            modal.style.display = "block";
+        };
+    
+        closeModalButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    
+        bookingForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const numTickets = numTicketsInput.value;
+    
+            if (numTickets < 1) {
+                bookingMessage.innerHTML = "<p style='color: red;'>Please select at least one ticket.</p>";
+                return;
+            }
+    
+            bookingMessage.innerHTML = `<p style='color: green;'>Your booking is confirmed! You booked ${numTickets} ticket(s) for "${movieTitleInput.value}" at ${showTimeInput.value}.</p>`;
+    
+            bookingForm.reset();
+            setTimeout(() => {
+                modal.style.display = "none";
+                bookingMessage.innerHTML = "";
+            }, 3000);
+        });
+    
+        movies.forEach((movie) => {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+    
+            movieCard.innerHTML = `
+                <img src="${movie.img}" alt="${movie.title}">
+                <h3>${movie.title}</h3>
+                <p>Genre: ${movie.genre}</p>
+                <p>Duration: ${movie.duration}</p>
+                <a href="#" onclick="openBookingModal(${JSON.stringify(movie)}, '${movie.showTimes[0]}')">Book Now</a>
+            `;
+            
+            movieContainer.appendChild(movieCard);
+        });
+    
+        window.openBookingModal = openBookingModal;
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+        const movies = [
+            {
+                title: "Puspha 2",
+                genre: "Action",
+                duration: "2h 15m",
+                img: "puspa 2.jpeg",
+                showTimes: ["12:00 PM", "3:00 PM", "6:00 PM"]
+            },
+            
+        ];
+    
+        const movieContainer = document.getElementById("movie-container");
+        const modal = document.getElementById("booking-modal");
+        const closeModalButton = document.getElementById("close-btn");
+        const bookingForm = document.getElementById("booking-form");
+        const bookingMessage = document.getElementById("booking-message");
+        const movieTitleInput = document.getElementById("movie-title");
+        const showTimeInput = document.getElementById("show-time");
+        const numTicketsInput = document.getElementById("num-tickets");
+    
+        const openBookingModal = (movie, showTime) => {
+            movieTitleInput.value = movie.title;
+            showTimeInput.value = showTime;
+            modal.style.display = "block";
+        };
+    
+        closeModalButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    
+        bookingForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const numTickets = numTicketsInput.value;
+    
+            if (numTickets < 1) {
+                bookingMessage.innerHTML = "<p style='color: red;'>Please select at least one ticket.</p>";
+                return;
+            }
+    
+            bookingMessage.innerHTML = `<p style='color: green;'>Your booking is confirmed! You booked ${numTickets} ticket(s) for "${movieTitleInput.value}" at ${showTimeInput.value}.</p>`;
+    
+            bookingForm.reset();
+            setTimeout(() => {
+                modal.style.display = "none";
+                bookingMessage.innerHTML = "";
+            }, 3000);
+        });
+    
+        movies.forEach((movie) => {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+    
+            movieCard.innerHTML = `
+                <img src="${movie.img}" alt="${movie.title}">
+                <h3>${movie.title}</h3>
+                <p>Genre: ${movie.genre}</p>
+                <p>Duration: ${movie.duration}</p>
+                <a href="#" onclick="openBookingModal(${JSON.stringify(movie)}, '${movie.showTimes[0]}')">Book Now</a>
+            `;
+            
+            movieContainer.appendChild(movieCard);
+        });
+    
+        window.openBookingModal = openBookingModal;
+    });
+    </script>
+</body>
+</html>

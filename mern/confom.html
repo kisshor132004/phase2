@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Book My Show</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header .logo h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Confirmation Section */
+.confirmation-section {
+    padding: 30px;
+    text-align: center;
+}
+
+.confirmation-section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.confirmation-details {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    width: 60%;
+}
+
+.confirmation-details h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.confirmation-details p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Footer Section */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <h1>Book Your Show</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/home.html">Home</a></li>
+                <li><a href="/movie.html">Movies</a></li>
+                <li><a href="/confom.html">Bookings</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+                <li><a href="/reg.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <section class="confirmation-section">
+        <h2>Booking Confirmed!</h2>
+        <div class="confirmation-details">
+            <h3>Your Booking Details:</h3>
+            <p><strong>Movie:</strong> <span id="movie-name"></span></p>
+            <p><strong>Show Time:</strong> <span id="show-time"></span></p>
+            <p><strong>Number of Tickets:</strong> <span id="ticket-count"></span></p>
+            <p><strong>Total Amount:</strong> <span id="total-amount"></span></p>
+        </div>
+
+        <button onclick="goBack()">Go Back to Movies</button>
+    </section>
+
+    
+    <footer>
+        <p>&copy; 2024 Book Your Show. All rights reserved.</p>
+    </footer>
+
+    <script> 
+        document.addEventListener("DOMContentLoaded", () => {
+    const movieName = sessionStorage.getItem("movieName");
+    const showTime = sessionStorage.getItem("showTime");
+    const ticketCount = sessionStorage.getItem("ticketCount");
+    const totalAmount = sessionStorage.getItem("totalAmount");
+
+    if (movieName && showTime && ticketCount && totalAmount) {
+        document.getElementById("movie-name").textContent = movieName;
+        document.getElementById("show-time").textContent = showTime;
+        document.getElementById("ticket-count").textContent = ticketCount;
+        document.getElementById("total-amount").textContent = totalAmount;
+    } else {
+        alert("No booking data found.");
+    }
+});
+
+function goBack() {
+    window.location.href = "index.html";}
+document.addEventListener("DOMContentLoaded", () => {
+    const movies = [
+        {
+            title: "Movie Title 1",
+            genre: "Action",
+            duration: "2h 15m",
+            img: "movie1.jpg",
+            showTimes: ["12:00 PM", "3:00 PM", "6:00 PM"]
+        },
+    ];
+
+    const movieContainer = document.getElementById("movie-container");
+    const modal = document.getElementById("booking-modal");
+    const closeModalButton = document.getElementById("close-btn");
+    const bookingForm = document.getElementById("booking-form");
+    const movieTitleInput = document.getElementById("movie-title");
+    const showTimeSelect = document.getElementById("show-time");
+    const numTicketsInput = document.getElementById("num-tickets");
+
+    const openBookingModal = (movie) => {
+        movieTitleInput.value = movie.title;
+        showTimeSelect.innerHTML = "";  
+        movie.showTimes.forEach((time) => {
+            const option = document.createElement("option");
+            option.value = time;
+            option.textContent = time;
+            showTimeSelect.appendChild(option);
+        });
+        modal.style.display = "block";
+    };
+
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    bookingForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const movieName = movieTitleInput.value;
+        const showTime = showTimeSelect.value;
+        const ticketCount = numTicketsInput.value;
+        const totalAmount = ticketCount * 10; 
+        sessionStorage.setItem("movieName", movieName);
+        sessionStorage.setItem("showTime", showTime);
+        sessionStorage.setItem("ticketCount", ticketCount);
+        sessionStorage.setItem("totalAmount", totalAmount);
+
+        window.location.href = "booking-confirmation.html";
+    });
+
+    movies.forEach((movie) => {
+        const movieCard = document.createElement("div");
+        movieCard.classList.add("movie-card");
+
+        movieCard.innerHTML = `
+            <img src="${movie.img}" alt="${movie.title}">
+            <h3>${movie.title}</h3>
+            <p>Genre: ${movie.genre}</p>
+            <p>Duration: ${movie.duration}</p>
+            <a href="#" onclick="openBookingModal(${JSON.stringify(movie)})">Book Now</a>
+        `;
+        
+        movieContainer.appendChild(movieCard);
+    });
+
+    window.openBookingModal = openBookingModal;
+});
+``
+
+    </script>
+</body>
+</html>
